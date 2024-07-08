@@ -1,0 +1,30 @@
+version: v2
+modules:
+  - path: .
+    name: buf.build/kizuku/kotatuneko
+deps:
+  - buf.build/googleapis/googleapis
+  - buf.build/grpc-ecosystem/grpc-gateway
+lint:
+  use:
+    - DEFAULT
+    - PACKAGE_NO_IMPORT_CYCLE
+    - UNARY_RPC
+  except:
+    - ENUM_ZERO_VALUE_SUFFIX
+    - FIELD_NOT_REQUIRED
+    - PACKAGE_VERSION_SUFFIX
+    - RPC_REQUEST_RESPONSE_UNIQUE
+    - RPC_REQUEST_STANDARD_NAME
+    - RPC_RESPONSE_STANDARD_NAME
+  ignore:
+    - google
+  rpc_allow_same_request_response: true
+  rpc_allow_google_protobuf_empty_requests: true
+  rpc_allow_google_protobuf_empty_responses: true
+  disallow_comment_ignores: true
+breaking:
+  use:
+    - WIRE_JSON
+  except:
+    - FIELD_SAME_DEFAULT
