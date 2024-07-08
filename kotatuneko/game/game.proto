@@ -1,0 +1,24 @@
+
+syntax = "proto3";
+
+package kotatuneko.game;
+
+import "google/protobuf/empty.proto";
+import "kotatuneko/game/rpc/game.proto";
+import "google/api/annotations.proto";
+
+
+service GameService {
+    rpc SendGameStatus(google.protobuf.Empty) returns (kotatuneko.game.rpc.GameStatusResponse) {
+        option (google.api.http) = {
+            get: "/ws"
+        };
+    
+    };
+    rpc ReceiveGameStatus(kotatuneko.game.rpc.GameStatusRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/ws"
+            body: "*"
+        };
+    };
+}

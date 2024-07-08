@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package kotatuneko.game.rpc;
+
+import "kotatuneko/game/resources/game.proto";
+
+
+
+
+message GameStatusResponse {
+    string sender_id = 1;
+    string room_id = 2;
+    kotatuneko.game.resources.GameState state = 3;
+    repeated kotatuneko.game.resources.Player players = 4;
+    repeated kotatuneko.game.resources.Object objects = 5;
+    repeated kotatuneko.game.resources.Stat stats = 6;
+    repeated kotatuneko.game.resources.Hand hands = 7;
+}
+
+message GameStatusRequest {
+    string sender_id = 1;
+    string room_id = 2;
+    kotatuneko.game.resources.GameState state = 3;
+    repeated kotatuneko.game.resources.Player players = 4;
+    repeated kotatuneko.game.resources.Object objects = 5;
+    repeated kotatuneko.game.resources.Stat stats = 6;
+    repeated kotatuneko.game.resources.Hand hands = 7;
+}

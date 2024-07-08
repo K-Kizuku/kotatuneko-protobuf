@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package kotatuneko.game.resources;
+
+enum GameState {
+  GAME_STATE_UNKNOWN = 0;
+  GAME_STATE_WAIT = 1;
+  GAME_STATE_PLAY = 2;
+  GAME_STATE_EXIT = 3;
+  GAME_STATE_FINISH = 4;
+  GAME_STATE_RESULT = 5;
+}
+
+enum HandState {
+  HAND_STATE_UNKNOWN = 0;
+  HAND_STATE_HOLDING = 1;
+  HAND_STATE_OPENING = 2;
+  HAND_STATE_THROWING = 3;
+}
+
+enum ObjectState {
+  OBJECT_STATE_UNKNOWN = 0;
+  OBJECT_STATE_QUIESCENT = 1;
+  OBJECT_STATE_MOVING = 2;
+  OBJECT_STATE_FORCING = 3;
+}
+
+enum ObjectKind {
+  OBJECT_KIND_UNKNOWN = 0;
+  OBJECT_KIND_RECTANGULAR = 1;
+}
+
+message Vector3 {
+  float x = 1;
+  float y = 2;
+  float z = 3;
+}
+
+message Player {
+  string player_id = 1;
+  string name = 2;
+  string color = 3;
+};
+
+message Object {
+  string object_id = 1;
+  int32 layer = 9;
+  ObjectKind kinds = 2;
+  ObjectState state = 3;
+  Vector3 position = 4;
+  Vector3 size = 8;
+};
+
+message Stat {
+
+};
+
+message Hand {
+  string user_id = 1;
+  HandState state = 2;
+  Vector3 center_position = 3;
+  Vector3 action_position = 4;
+  Vector3 force_direction = 5;
+}
