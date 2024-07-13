@@ -5,7 +5,7 @@ managed:
     - file_option: go_package_prefix
       # <module_name>   : name in go.mod
       # <relative_path> : where generated code should be output
-      value: github.com/K-Kizuku/kotatuneko-backend/gen
+      value: github.com/K-Kizuku/kotatuneko-protobuf/gen
     # Remove `disable` field if googleapis is not used
   disable:
     - module: buf.build/googleapis/googleapis

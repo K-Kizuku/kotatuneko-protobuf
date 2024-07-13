@@ -61,18 +61,17 @@ jobs:
           cd gen
           go test ./...
 
-      - name: Build Go package
+      - name: Configure Git
         run: |
-          cd gen
-          go build ./...
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Create GitHub Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Commit changes
+        run: |
+          git add .
+          git commit -m "🏷️ release ${{ github.ref }}"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.6.0
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
-          body: "New release of the Go package."
+          github_token: ${{ secrets.GITHUB_TOKEN }}
