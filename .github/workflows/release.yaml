@@ -53,7 +53,7 @@ jobs:
         run: |
           cp LICENSE gen/
           cd gen
-          go mod init github.com/K-Kizuku/kotatuneko-backend/gen
+          go mod init github.com/K-Kizuku/kotatuneko-proto/gen
           go mod tidy
 
       - name: Test Go package
