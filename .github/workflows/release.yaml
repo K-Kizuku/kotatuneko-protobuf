@@ -24,6 +24,7 @@ jobs:
       - name: Run buf generate
         run: |
           buf generate
+          ls
 
   test:
     name: Test
