@@ -1,0 +1,24 @@
+name: Update Swagger Hub
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "gen/game/game.swagger.json"
+
+jobs:
+  update-swagger-hub:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Update Swagger Hub
+        env:
+          SWAGGER_HUB_API_KEY: ${{ secrets.SWAGGER_HUB_API_KEY }}
+        run: |
+          curl -X PUT "https://app.swaggerhub.com/apis/KOTANIKIZUKU/kotatuneko/1.0.0" \
+          -H "Authorization: Bearer ${{ env.SWAGGER_HUB_API_KEY }}" \
+          -H "Content-Type: application/json" \
+          -d @gen/game/game.swagger.json

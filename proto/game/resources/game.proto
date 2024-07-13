@@ -52,7 +52,13 @@ message Object {
 };
 
 message Stat {
-
+  string player_id = 1;
+  int32 score = 2;
+  int32 rank = 3;
+  int32 rank_score = 4;
+  int32 rank_score_diff = 5;
+  int32 rank_score_diff_rate = 6;
+  int32 rank_score_diff_rate_rank = 7;
 };
 
 message Hand {
