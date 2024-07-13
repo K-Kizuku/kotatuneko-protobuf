@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package game.rpc;
+
+import "game/resources/game.proto";
+
+
+
+
+message GameStatusResponse {
+    string sender_id = 1;
+    string room_id = 2;
+    game.resources.GameState state = 3;
+    repeated game.resources.Player players = 4;
+    repeated game.resources.Object objects = 5;
+    repeated game.resources.Stat stats = 6;
+    repeated game.resources.Hand hands = 7;
+}
+
+message GameStatusRequest {
+    string sender_id = 1;
+    string room_id = 2;
+    game.resources.GameState state = 3;
+    repeated game.resources.Player players = 4;
+    repeated game.resources.Object objects = 5;
+    repeated game.resources.Stat stats = 6;
+    repeated game.resources.Hand hands = 7;
+}

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package kotatuneko.game.resources;
+package game.resources;
 
 enum GameState {
   GAME_STATE_UNKNOWN = 0;

@@ -1,6 +1,6 @@
 version: v2
 modules:
-  - path: .
+  - path: proto
     name: buf.build/kizuku/kotatuneko
 deps:
   - buf.build/googleapis/googleapis
