@@ -31,33 +31,9 @@ jobs:
           name: generated-files
           path: gen/
 
-  test:
-    name: Test
-    needs: buf-generate
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Download generated gen directory
-        uses: actions/download-artifact@v3
-        with:
-          name: generated-files
-          path: gen
-
-      - name: Set up Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: "1.22"
-
-      - name: Test Go package
-        run: |
-          cd gen
-          go test ./...
-
   release:
     name: Create Release
-    needs: test
+    needs: buf-generate
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
@@ -73,12 +49,21 @@ jobs:
         with:
           go-version: "1.22" # Ensure Go version is consistent
 
-      - name: Build Go package
+      - name: Initialize Go module
         run: |
           cp LICENSE gen/
           cd gen
           go mod init github.com/K-Kizuku/kotatuneko-backend/gen
           go mod tidy
+
+      - name: Test Go package
+        run: |
+          cd gen
+          go test ./...
+
+      - name: Build Go package
+        run: |
+          cd gen
           go build ./...
 
       - name: Create GitHub Release
