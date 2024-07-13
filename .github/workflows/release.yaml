@@ -31,8 +31,27 @@ jobs:
       - name: Commit generated code
         id: commit_generated_code
         run: |
-          TAG_NAME="v$(date +'%Y%m%d%H%M%S')"
-          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_OUTPUT
+          # Fetch all tags
+          git fetch --tags
+
+          # Get the latest tag
+          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+
+          # Extract the current version parts
+          IFS='.' read -r -a version_parts <<< "${latest_tag//v/}"
+          major="${version_parts[0]}"
+          minor="${version_parts[1]}"
+          patch="${version_parts[2]}"
+
+          # Increment the patch version
+          patch=$((patch + 1))
+
+          # Create new tag
+          new_tag="v$major.$minor.$patch"
+
+          # Set output for the next step
+          echo "TAG_NAME=$new_tag" >> $GITHUB_OUTPUT
+
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add .
