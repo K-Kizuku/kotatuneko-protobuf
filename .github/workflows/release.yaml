@@ -8,8 +8,26 @@ on:
       - "v*.*.*"
 
 jobs:
+  buf-generate:
+    name: Buf Generate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Buf
+        run: |
+          curl -sSL https://github.com/bufbuild/buf/releases/download/v1.0.0-rc1/buf-Linux-x86_64 -o buf
+          chmod +x buf
+          sudo mv buf /usr/local/bin/buf
+
+      - name: Run buf generate
+        run: |
+          buf generate
+
   test:
     name: Test
+    needs: buf-generate
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -18,7 +36,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: "1.23rc1" # Go version to use
+          go-version: "1.22"
 
       - name: Test Go package
         run: |
@@ -37,7 +55,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: "1.18" # Go version to use
+          go-version: "1.23rc1" # Ensure Go version is consistent
 
       - name: Build Go package
         run: |
