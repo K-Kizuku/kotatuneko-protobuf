@@ -24,6 +24,7 @@ jobs:
       - name: Run buf generate
         run: |
           buf generate
+          cp LICENSE gen/
 
       - name: Upload generated gen directory
         uses: actions/upload-artifact@v3
