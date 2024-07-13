@@ -10,6 +10,8 @@ c-proto:
 	./scripts/create_proto.sh ${DIR}
 
 commit:
+	rm -rf ./gen
+	git add './gen/*'  
 	npx git-cz
 
 lint:
@@ -19,4 +21,5 @@ lint:
 push: lint
 	buf push
 
-
+release:
+	git tag -a v${VERSION} -m "Release v${VERSION}"
