@@ -1,90 +1,56 @@
-name: Release Go Package
+name: Buf Generate and Release
 
 on:
   push:
     branches:
       - main
-    tags:
-      - "v*.*.*"
 
 jobs:
   buf-generate:
-    name: Buf Generate
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - name: Install Buf
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: "1.22"
+
+      - name: Install buf
         run: |
-          curl -sSL "https://github.com/bufbuild/buf/releases/download/v1.34.0/buf-$(uname -s)-$(uname -m)" -o buf
-          chmod +x buf
-          sudo mv buf /usr/local/bin/buf
+          wget "https://github.com/bufbuild/buf/releases/download/v1.34.0/buf-$(uname -s)-$(uname -m)"
+          chmod +x buf-Linux-x86_64
+          sudo mv buf-Linux-x86_64 /usr/local/bin/buf
 
-      - name: Run buf generate
+      - name: Generate code
         run: |
           buf generate
-          cp LICENSE gen/
 
-      - name: Upload generated gen directory
-        uses: actions/upload-artifact@v3
-        with:
-          name: generated-files
-          path: gen/
-
-  release:
-    name: Create Release
-    needs: buf-generate
-    if: startsWith(github.ref, 'refs/tags/')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Download generated gen directory
-        uses: actions/download-artifact@v3
-        with:
-          name: generated-files
-          path: gen
-      # - name: Set up Go
-      #   uses: actions/setup-go@v4
-      #   with:
-      #     go-version: "1.22" # Ensure Go version is consistent
-
-      # - name: Initialize Go module
-      #   run: |
-      #     cp LICENSE gen/
-      #     cd gen
-      #     go mod init github.com/K-Kizuku/kotatuneko-proto/gen
-      #     go mod tidy
-
-      # - name: Test Go package
-      #   run: |
-      #     cd gen
-      #     go test ./...
-
-      - name: Configure Git
+      - name: Commit generated code
         run: |
+          TAG_NAME="v$(date +'%Y%m%d%H%M%S')"
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Commit changes
-        run: |
           git add .
-          git commit -m "🏷️ release ${{ github.ref }}"
+          git commit -m "🏷️ release $TAG_NAME"
+          git push
 
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
+      - name: Create Tag
+        id: create_tag
+        run: |
+          TAG_NAME="v$(date +'%Y%m%d%H%M%S')"
+          git tag $TAG_NAME
+          git push origin $TAG_NAME
 
-      - name: Create GitHub Release
+      - name: Create Release
+        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ steps.create_tag.outputs.TAG_NAME }}
+          release_name: Release ${{ steps.create_tag.outputs.TAG_NAME }}
           draft: false
           prerelease: false
-          body: "New release of the Go package."
