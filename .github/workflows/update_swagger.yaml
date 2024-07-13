@@ -1,9 +1,7 @@
 name: Update Swagger Hub
 
 on:
-  release:
-    types:
-      - released
+  workflow_dispatch:
 
 jobs:
   update-swagger-hub:
