@@ -29,8 +29,10 @@ jobs:
           buf generate
 
       - name: Commit generated code
+        id: commit_generated_code
         run: |
           TAG_NAME="v$(date +'%Y%m%d%H%M%S')"
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_OUTPUT
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add .
@@ -40,9 +42,8 @@ jobs:
       - name: Create Tag
         id: create_tag
         run: |
-          TAG_NAME="v$(date +'%Y%m%d%H%M%S')"
-          git tag $TAG_NAME
-          git push origin $TAG_NAME
+          git tag ${{ steps.commit_generated_code.outputs.TAG_NAME }}
+          git push origin ${{ steps.commit_generated_code.outputs.TAG_NAME }}
 
       - name: Create Release
         id: create_release
@@ -50,7 +51,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.create_tag.outputs.TAG_NAME }}
+          tag_name: ${{ steps.commit_generated_code.outputs.TAG_NAME }}
           release_name: Release ${{ steps.create_tag.outputs.TAG_NAME }}
           draft: false
           prerelease: false
