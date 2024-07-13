@@ -1,11 +1,9 @@
 name: Update Swagger Hub
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "gen/game/game.swagger.json"
+  release:
+    types:
+      - published
 
 jobs:
   update-swagger-hub:
