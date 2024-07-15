@@ -3,21 +3,22 @@ syntax = "proto3";
 
 package game;
 
-import "google/protobuf/empty.proto";
 import "game/rpc/game.proto";
 import "google/api/annotations.proto";
 
 
 service GameService {
-    rpc SendGameStatus(google.protobuf.Empty) returns (game.rpc.GameStatusResponse) {
+
+    rpc GameStatusStream(game.rpc.GameStatusRequest) returns (game.rpc.GameStatusResponse) {
         option (google.api.http) = {
-            get: "/ws"
+            post: "/ws/game_status"
+            body: "*"
         };
-    
     };
-    rpc ReceiveGameStatus(game.rpc.GameStatusRequest) returns (google.protobuf.Empty) {
+
+    rpc PhysicsStream(game.rpc.PhysicsRequest) returns (game.rpc.PhysicsResponse) {
         option (google.api.http) = {
-            post: "/ws"
+            post: "/ws/physics"
             body: "*"
         };
     };

@@ -15,12 +15,11 @@ enum HandState {
   HAND_STATE_UNKNOWN = 0;
   HAND_STATE_HOLDING = 1;
   HAND_STATE_OPENING = 2;
-  HAND_STATE_THROWING = 3;
 }
 
 enum ObjectState {
   OBJECT_STATE_UNKNOWN = 0;
-  OBJECT_STATE_QUIESCENT = 1;
+  OBJECT_STATE_STAYING = 1;
   OBJECT_STATE_MOVING = 2;
   OBJECT_STATE_FORCING = 3;
 }
@@ -66,5 +65,4 @@ message Hand {
   HandState state = 2;
   Vector3 center_position = 3;
   Vector3 action_position = 4;
-  Vector3 force_direction = 5;
 }

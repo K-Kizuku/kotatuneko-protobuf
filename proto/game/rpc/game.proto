@@ -26,3 +26,29 @@ message GameStatusRequest {
     repeated game.resources.Stat stats = 6;
     repeated game.resources.Hand hands = 7;
 }
+
+message PhysicsInitRequest {
+    string sender_id = 1;
+    string room_id = 2;
+    repeated game.resources.Object objects = 3;
+}
+
+message PhysicsInitResponse {
+    string sender_id = 1;
+    string room_id = 2;
+    game.resources.GameState state = 3;
+    repeated game.resources.Object objects = 4;
+    repeated game.resources.Hand hands = 5;
+}
+
+message PhysicsRequest {
+    string sender_id = 1;
+    string room_id = 2;
+    game.resources.Hand hands = 3;
+}
+
+message PhysicsResponse {
+    string sender_id = 1;
+    string room_id = 2;
+    repeated game.resources.Object objects = 3;
+}
