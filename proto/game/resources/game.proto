@@ -30,9 +30,9 @@ enum ObjectKind {
 }
 
 message Vector3 {
-  float x = 1;
-  float y = 2;
-  float z = 3;
+  double x = 1;
+  double y = 2;
+  double z = 3;
 }
 
 message Player {
@@ -43,11 +43,11 @@ message Player {
 
 message Object {
   string object_id = 1;
-  int32 layer = 9;
-  ObjectKind kinds = 2;
-  ObjectState state = 3;
-  Vector3 position = 4;
-  Vector3 size = 8;
+  int32 layer = 2;
+  ObjectKind kinds = 3;
+  ObjectState state = 4;
+  Vector3 position = 5;
+  Vector3 size = 6;
 };
 
 message Stat {
